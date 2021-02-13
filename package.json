@@ -1,0 +1,28 @@
+{
+  "name": "chain-rebalancer-fastify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "start:dev": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rahul Sethuram",
+  "license": "ISC",
+  "dependencies": {
+    "@connext/vector-types": "^0.1.15-beta.13",
+    "@connext/vector-utils": "^0.1.15-beta.13",
+    "@maticnetwork/maticjs": "^2.0.31",
+    "@sinclair/typebox": "^0.12.7",
+    "ajv": "^7.1.0",
+    "ethers": "^5.0.31",
+    "fastify": "^3.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.27",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5"
+  }
+}

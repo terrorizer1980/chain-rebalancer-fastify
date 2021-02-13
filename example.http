@@ -1,0 +1,43 @@
+POST http://localhost:8080/matic/deposit/approve
+Content-Type: application/json
+
+{
+  "amount": "100",
+  "assetId": "0x655F2166b0709cd575202630952D71E2bB0d61Af",
+  "signer": "0x5A9e792143bf2708b4765C144451dCa54f559a19",
+  "parentProvider": "https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c",
+  "parentChainId": 5,
+  "childProvider": "https://rpc-mumbai.matic.today",
+  "childChainId": 80001
+}
+
+##################
+
+POST http://localhost:8080/matic/deposit/execute
+Content-Type: application/json
+
+{
+  "amount": "100",
+  "assetId": "0x655F2166b0709cd575202630952D71E2bB0d61Af",
+  "signer": "0x5A9e792143bf2708b4765C144451dCa54f559a19",
+  "parentProvider": "https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c",
+  "parentChainId": 5,
+  "childProvider": "https://rpc-mumbai.matic.today",
+  "childChainId": 80001
+}
+
+##################
+
+POST http://localhost:8080/matic/deposit/status
+Content-Type: application/json
+
+{
+  "amount": "100",
+  "assetId": "0x655F2166b0709cd575202630952D71E2bB0d61Af",
+  "signer": "0x5A9e792143bf2708b4765C144451dCa54f559a19",
+  "parentProvider": "https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c",
+  "parentChainId": 5,
+  "childProvider": "https://rpc-mumbai.matic.today",
+  "childChainId": 80001,
+  "txHash": "0xbfaef1c6272ef81095ae906e99c47cdfb681608e455706935f40eb679eeb8a36"
+}
