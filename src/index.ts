@@ -112,7 +112,7 @@ server.post<{ Body: RebalanceParams }>(
   }
 );
 
-server.listen(8080, (err, address) => {
+server.listen(8080, "0.0.0.0", (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
