@@ -27,7 +27,7 @@ server.get("/ping", async (request, reply) => {
 });
 
 server.post<{ Body: RebalanceParams }>(
-  "/matic/deposit/approve",
+  "/matic/deposit/approval",
   { schema: { body: RebalanceParamsSchema } },
   async (request, reply) => {
     const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
