@@ -1,21 +1,21 @@
-@host=http://localhost:8080
-# @host=https://rebalancer.connextapi.com
+# @host=http://localhost:8080
+@host=https://rebalancer.connextapi.com
 
 GET {{host}}/ping
 
 ##################
 
-POST {{host}}/matic/deposit/approve
+POST {{host}}/matic/deposit/approval
 Content-Type: application/json
 
 {
   "amount": "100",
-  "assetId": "0x655F2166b0709cd575202630952D71E2bB0d61Af",
-  "signer": "0x5A9e792143bf2708b4765C144451dCa54f559a19",
-  "fromProvider": "https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c",
-  "fromChainId": 5,
-  "toProvider": "https://rpc-mumbai.matic.today",
-  "toChainId": 80001
+  "assetId": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
+  "signer": "0xe6887c0cc3c37cb2ee34bc58ab258f36825ca910",
+  "fromProvider": "https://mainnet.infura.io/v3/",
+  "fromChainId": 1,
+  "toProvider": "https://rpc-mainnet.matic.network",
+  "toChainId": 137
 }
 
 ##################
@@ -24,13 +24,13 @@ POST {{host}}/matic/deposit/execute
 Content-Type: application/json
 
 {
-  "amount": "100",
-  "assetId": "0x655F2166b0709cd575202630952D71E2bB0d61Af",
-  "signer": "0x5A9e792143bf2708b4765C144451dCa54f559a19",
-  "fromProvider": "https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c",
-  "fromChainId": 5,
-  "toProvider": "https://rpc-mumbai.matic.today",
-  "toChainId": 80001
+  "amount": "76478066937229740000000",
+  "assetId": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
+  "signer": "0xe6887c0cc3c37cb2ee34bc58ab258f36825ca910",
+  "fromProvider": "https://mainnet.infura.io/v3/",
+  "fromChainId": 1,
+  "toProvider": "https://rpc-mainnet.matic.network",
+  "toChainId": 137
 }
 
 ##################
@@ -40,11 +40,11 @@ Content-Type: application/json
 
 {
   "amount": "100",
-  "assetId": "0x655F2166b0709cd575202630952D71E2bB0d61Af",
-  "signer": "0x5A9e792143bf2708b4765C144451dCa54f559a19",
-  "fromProvider": "https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c",
-  "fromChainId": 5,
-  "toProvider": "https://rpc-mumbai.matic.today",
-  "toChainId": 80001,
-  "txHash": "0xbfaef1c6272ef81095ae906e99c47cdfb681608e455706935f40eb679eeb8a36"
+  "assetId": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
+  "signer": "0xe6887c0cc3c37cb2ee34bc58ab258f36825ca910",
+  "fromProvider": "https://mainnet.infura.io/v3/",
+  "fromChainId": 1,
+  "toProvider": "https://rpc-mainnet.matic.network",
+  "toChainId": 137,
+  "txHash": "0xa5786b2dc3a342eb3b1935ef38c34e8f6137101b85bcf63ab540b0108feaeaf5"
 }
