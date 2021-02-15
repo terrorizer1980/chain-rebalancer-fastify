@@ -15,10 +15,10 @@ export const RebalanceParamsSchema = Type.Object({
   assetId: TAddress,
   signer: TAddress,
   txHash: Type.Optional(TBytes32),
-  parentProvider: Type.String({ format: "uri" }),
-  childProvider: Type.String({ format: "uri" }),
-  parentChainId: Type.Number(),
-  childChainId: Type.Number(),
+  fromProvider: Type.String({ format: "uri" }),
+  toProvider: Type.String({ format: "uri" }),
+  fromChainId: Type.Number(),
+  toChainId: Type.Number(),
 });
 export type RebalanceParams = Static<typeof RebalanceParamsSchema>;
 
@@ -30,16 +30,16 @@ server.post<{ Body: RebalanceParams }>(
   "/matic/deposit/approve",
   { schema: { body: RebalanceParamsSchema } },
   async (request, reply) => {
-    const network = request.body.parentChainId === 1 ? "mainnet" : "testnet";
-    const version = request.body.parentChainId === 1 ? "v1" : "mumbai";
+    const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
+    const version = request.body.fromChainId === 1 ? "v1" : "mumbai";
     console.log("network: ", network);
     console.log("version: ", version);
     try {
       const maticPOSClient = new MaticPOSClient({
         network,
         version,
-        parentProvider: request.body.parentProvider,
-        maticProvider: request.body.childProvider,
+        parentProvider: request.body.fromProvider,
+        maticProvider: request.body.toProvider,
       });
 
       const { transaction, allowance } = await approveForDeposit(
@@ -60,8 +60,8 @@ server.post<{ Body: RebalanceParams }>(
   "/matic/deposit/execute",
   { schema: { body: RebalanceParamsSchema } },
   async (request, reply) => {
-    const network = request.body.parentChainId === 1 ? "mainnet" : "testnet";
-    const version = request.body.parentChainId === 1 ? "v1" : "mumbai";
+    const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
+    const version = request.body.fromChainId === 1 ? "v1" : "mumbai";
     console.log("network: ", network);
     console.log("version: ", version);
 
@@ -69,8 +69,8 @@ server.post<{ Body: RebalanceParams }>(
       const maticPOSClient = new MaticPOSClient({
         network,
         version,
-        parentProvider: request.body.parentProvider,
-        maticProvider: request.body.childProvider,
+        parentProvider: request.body.fromProvider,
+        maticProvider: request.body.toProvider,
       });
 
       const { transaction } = await deposit(
@@ -98,10 +98,10 @@ server.post<{ Body: RebalanceParams }>(
     }
     try {
       const status = await checkDepositStatus(
-        request.body.parentProvider,
-        request.body.childProvider,
-        request.body.parentChainId,
-        request.body.childChainId,
+        request.body.fromProvider,
+        request.body.toProvider,
+        request.body.fromChainId,
+        request.body.toChainId,
         request.body.txHash
       );
       return reply.send({ status });
