@@ -1,0 +1,13 @@
+.DS_Store
+.env
+Dockerfile
+docker-compose.yml
+.dockerignore
+.git
+.github
+.gitignore
+.next
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

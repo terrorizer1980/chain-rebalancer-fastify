@@ -3,7 +3,7 @@ services:
 
   rebalancer:
     container_name: rebalancer
-    image: 679752396206.dkr.ecr.us-east-2.amazonaws.com/chain-rebalancer-api:latest
+    image: connextproject/chain-rebalancer-api:latest
     build: .
     restart: always
     ports:
