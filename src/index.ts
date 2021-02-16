@@ -30,6 +30,18 @@ server.post<{ Body: RebalanceParams }>(
   "/matic/deposit/approval",
   { schema: { body: RebalanceParamsSchema } },
   async (request, reply) => {
+    if (![1, 5].includes(request.body.fromChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "fromChainId not supported", body: request.body });
+    }
+
+    if (![137, 80001].includes(request.body.toChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "toChainId not supported", body: request.body });
+    }
+
     const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
     const version = request.body.fromChainId === 1 ? "v1" : "mumbai";
     console.log("network: ", network);
@@ -51,7 +63,9 @@ server.post<{ Body: RebalanceParams }>(
       return reply.send({ transaction, allowance });
     } catch (e) {
       console.log(e);
-      return reply.code(500).send({ error: "Internal server error" });
+      return reply
+        .code(500)
+        .send({ error: "Internal server error", message: e.message });
     }
   }
 );
@@ -60,6 +74,18 @@ server.post<{ Body: RebalanceParams }>(
   "/matic/deposit/execute",
   { schema: { body: RebalanceParamsSchema } },
   async (request, reply) => {
+    if (![1, 5].includes(request.body.fromChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "fromChainId not supported", body: request.body });
+    }
+
+    if (![137, 80001].includes(request.body.toChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "toChainId not supported", body: request.body });
+    }
+
     const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
     const version = request.body.fromChainId === 1 ? "v1" : "mumbai";
     console.log("network: ", network);
@@ -91,6 +117,18 @@ server.post<{ Body: RebalanceParams }>(
   "/matic/deposit/status",
   { schema: { body: RebalanceParamsSchema } },
   async (request, reply) => {
+    if (![1, 5].includes(request.body.fromChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "fromChainId not supported", body: request.body });
+    }
+
+    if (![137, 80001].includes(request.body.toChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "toChainId not supported", body: request.body });
+    }
+
     if (!request.body.txHash) {
       return reply
         .code(400)
