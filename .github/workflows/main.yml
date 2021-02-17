@@ -215,7 +215,7 @@ jobs:
               },
               {
                 "name": "Workflow",
-                "value": ["+ ${{ github.run_number }} +"]("+ wf_run.data.html_url +") +" took "+ date_diff_func(new Date(wf_run.data.created_at), new Date(wf_run.data.updated_at)),
+                "value": "[#"+ ${{ github.run_number }} +"]("+ wf_run.data.html_url +") +" took "+ date_diff_func(new Date(wf_run.data.created_at), new Date(wf_run.data.updated_at)),
                 "inline": true
               }
             ]
