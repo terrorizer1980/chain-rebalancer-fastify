@@ -7,6 +7,7 @@ on:
 
 env:
   CONTAINER_IMAGE_NAME: ${{ secrets.CONTAINER_IMAGE_NAME_PROD }}
+  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
   DOCKER_BUILDKIT: 1
   HOST: ${{ secrets.HOST_PROD }}
   PORT: ${{ secrets.PORT_PROD }}
@@ -53,3 +54,17 @@ jobs:
         USERNAME: ${USERNAME}
         KEY: ${SSHKEY}
         script: deploy.connext ${{ steps.vars.outputs.image }} ${{ steps.vars.outputs.tag }}
+
+
+  notify:
+    if: always()
+    name: Discord notify
+    needs:
+      - build
+      - deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sending notify
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${DISCORD_WEBHOOK_URL}
