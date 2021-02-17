@@ -172,7 +172,7 @@ jobs:
                   is_wf_failure = true
                 }
                 job_blocks.push({
-                    "name": status_icon_func(j.conclusion) + "["+ ${{ j.name }} +"](j.html_url)",
+                    "name": status_icon_func(j.conclusion) + "["+ ${{ j.name }} +"]("+ ${{ j.html_url }} +")",
                     "value": date_diff_func(new Date(j.started_at), new Date(j.completed_at)),
                     "inline": true
                 })
