@@ -225,7 +225,7 @@ jobs:
                 {
                   "color": status_color_func(workflow_status),
                   "title": msg_status + " *${{ github.workflow }}* ",
-                  "fields": [].concat(header_blocks, job_blocks)
+                  "fields": header_blocks
                 }
               ]
             }
