@@ -65,6 +65,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sending notify
-        uses: sarisia/actions-status-discord@v1
+        uses: sarisia/actions-status-discord@v1.8.3
         with:
           webhook: ${DISCORD_WEBHOOK_URL}
