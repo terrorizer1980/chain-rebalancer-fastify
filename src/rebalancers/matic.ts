@@ -70,7 +70,11 @@ export const checkDepositStatus = async (
   parentChainId: number,
   childChainId: number,
   txHash: string
-): Promise<any> => {
+): Promise<{
+  completed: boolean;
+  childCounter: string;
+  rootCounter: string;
+}> => {
   console.log(
     `checkDepositStatus: ${JSON.stringify({
       parentProvider,
@@ -113,11 +117,14 @@ export const checkDepositStatus = async (
   console.log("tx: ", tx);
   let childCounter = await childContract.lastStateId();
   console.log("childCounter: ", childCounter);
-  let rootCounter = BigNumber.from(tx.logs[3].topics[1]);
+  let rootCounter = (tx.logs[3] ?? { topics: [] })?.topics[1];
   console.log("rootCounter: ", rootCounter);
+  if (!rootCounter) {
+    throw new Error(`Could not get root counter`);
+  }
   return {
     completed: BigNumber.from(childCounter).gte(rootCounter),
     childCounter: BigNumber.from(childCounter).toString(),
-    rootCounter: rootCounter.toString(),
+    rootCounter: BigNumber.from(rootCounter).toString(),
   };
 };

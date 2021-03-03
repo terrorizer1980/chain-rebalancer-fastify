@@ -15,12 +15,23 @@ export const RebalanceParamsSchema = Type.Object({
   assetId: TAddress,
   signer: TAddress,
   txHash: Type.Optional(TBytes32),
+  callbackUrl: Type.Optional(Type.String({ format: "uri" })),
   fromProvider: Type.String({ format: "uri" }),
   toProvider: Type.String({ format: "uri" }),
   fromChainId: Type.Number(),
   toChainId: Type.Number(),
 });
 export type RebalanceParams = Static<typeof RebalanceParamsSchema>;
+
+export const CheckStatusParamsSchema = Type.Object({
+  txHash: TBytes32,
+  callbackUrl: Type.Optional(Type.String({ format: "uri" })),
+  fromProvider: Type.String({ format: "uri" }),
+  toProvider: Type.String({ format: "uri" }),
+  fromChainId: Type.Number(),
+  toChainId: Type.Number(),
+});
+export type CheckStatusParams = Static<typeof CheckStatusParamsSchema>;
 
 server.get("/ping", async (request, reply) => {
   return "pong\n";
@@ -113,9 +124,9 @@ server.post<{ Body: RebalanceParams }>(
   }
 );
 
-server.post<{ Body: RebalanceParams }>(
+server.post<{ Body: CheckStatusParams }>(
   "/matic/deposit/status",
-  { schema: { body: RebalanceParamsSchema } },
+  { schema: { body: CheckStatusParamsSchema } },
   async (request, reply) => {
     if (![1, 5].includes(request.body.fromChainId)) {
       return reply
@@ -145,7 +156,9 @@ server.post<{ Body: RebalanceParams }>(
       return reply.send({ status });
     } catch (e) {
       console.log(e);
-      return reply.code(500).send({ error: "Internal server error" });
+      return reply
+        .code(500)
+        .send({ error: `Internal server error: ${e.message}` });
     }
   }
 );
