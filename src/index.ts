@@ -6,7 +6,7 @@ import {
   approveForDeposit,
   checkDepositStatus,
   deposit,
-} from "./rebalancers/matic";
+} from "./rebalancers/matic/deposit";
 
 const server = fastify();
 

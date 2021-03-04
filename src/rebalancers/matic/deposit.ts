@@ -1,5 +1,5 @@
 import { MaticPOSClient } from "@maticnetwork/maticjs";
-import { BigNumber, constants, Contract, providers, utils } from "ethers";
+import { BigNumber, constants, Contract, providers } from "ethers";
 
 export const deposit = async (
   maticPOSClient: MaticPOSClient,
