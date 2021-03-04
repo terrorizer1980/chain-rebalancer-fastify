@@ -6,6 +6,8 @@ import {
 } from "@connext/vector-types";
 import { Type, Static } from "@sinclair/typebox";
 
+// TODO: move these into vector-types and import
+
 export const ApproveParamsSchema = Type.Object({
   amount: TIntegerString,
   assetId: TAddress,

@@ -1,13 +1,11 @@
-import { TIntegerString, TAddress, TBytes32 } from "@connext/vector-types";
 import { MaticPOSClient } from "@maticnetwork/maticjs";
-import { Type, Static } from "@sinclair/typebox";
 import fastify from "fastify";
 import {
   approveForDeposit,
   checkDepositStatus,
   deposit,
 } from "./rebalancers/matic/deposit";
-import { burn, waitForProofOfBurn } from "./rebalancers/matic/withdraw";
+import { burn, checkForProofOfBurn } from "./rebalancers/matic/withdraw";
 import {
   ApproveParams,
   ApproveParamsSchema,
@@ -235,12 +233,11 @@ server.post<{ Body: CheckStatusParams }>(
         parentProvider: request.body.fromProvider,
         maticProvider: request.body.toProvider,
       });
-      const status = await waitForProofOfBurn(
+      const status = await checkForProofOfBurn(
         maticPOSClient,
         request.body.fromChainId,
         request.body.blockNumber,
         request.body.txHash,
-        request.body.callbackUrl,
         request.body.signer
       );
       return reply.send({ status });
