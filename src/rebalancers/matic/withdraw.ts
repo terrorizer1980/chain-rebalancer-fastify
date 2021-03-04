@@ -32,12 +32,11 @@ type BlockIncludedResponse = {
   error: boolean;
 };
 
-export const waitForProofOfBurn = async (
+export const checkForProofOfBurn = async (
   maticPOSClient: MaticPOSClient,
   childChainId: number,
   blockNumber: number,
   burnTxHash: string,
-  callbackUrl: string,
   routerAddress: string
 ) => {
   let url: string;
@@ -50,32 +49,26 @@ export const waitForProofOfBurn = async (
   }
   const rest = new RestClient("rebalancer");
 
-  console.log("Waiting for proof of burn");
-  let counter = 0;
-  const interval = setInterval(async () => {
-    console.log("Interval started: ", counter);
-    const res = await rest.get<BlockIncludedResponse>(url);
-    if (res.statusCode !== 200) {
-      console.error(`Bad response from Matic API: ${res}`);
-      return;
-    }
-    console.log("res: ", res);
-    if (res.result.message.toLowerCase().includes("No Block found")) {
-      console.log("Block not present yet");
-      return;
-    }
+  const res = await rest.get<BlockIncludedResponse>(url);
+  if (res.statusCode !== 200) {
+    console.error(`Bad response from Matic API: ${res}`);
+    return;
+  }
+  console.log("res: ", res);
+  if (res.result.message.toLowerCase().includes("No Block found")) {
+    console.log("Block not present yet");
+    return { completed: false };
+  }
 
-    if (res.result.message.toLowerCase().includes("success")) {
-      console.log("Block is included, sending tx to webhook: ", callbackUrl);
-      const tx = await maticPOSClient.exitERC20(burnTxHash, {
-        from: routerAddress,
-        encodeAbi: true,
-      });
-      const callbackRes = await rest.create(callbackUrl, { transaction: tx });
-      console.log("callbackRes: ", callbackRes);
-      clearInterval(interval);
-    }
-  }, 30_000);
+  if (res.result.message.toLowerCase().includes("success")) {
+    console.log("Block is included, generating exit tx");
+    const tx = await maticPOSClient.exitERC20(burnTxHash, {
+      from: routerAddress,
+      encodeAbi: true,
+    });
+    return { completed: true, transaction: tx };
+  }
 
+  console.error("Unknown response, check logs and handle!");
   return { completed: false };
 };

@@ -44,7 +44,6 @@ export type ExecuteResponse = Static<typeof ExecuteResponseSchema>;
 
 export const CheckStatusParamsSchema = Type.Object({
   txHash: TBytes32,
-  callbackUrl: Type.String({ format: "uri" }),
   fromProvider: Type.String({ format: "uri" }),
   toProvider: Type.String({ format: "uri" }),
   fromChainId: TChainId,
@@ -55,6 +54,12 @@ export const CheckStatusParamsSchema = Type.Object({
 export type CheckStatusParams = Static<typeof CheckStatusParamsSchema>;
 
 export const CheckStatusResponseSchema = Type.Object({
-  status: Type.Boolean(),
+  status: Type.Object({ completed: Type.Boolean() }),
+  transaction: Type.Optional(
+    Type.Object({
+      to: Type.String(),
+      data: Type.String(),
+    })
+  ),
 });
 export type CheckStatusResponse = Static<typeof CheckStatusResponseSchema>;
