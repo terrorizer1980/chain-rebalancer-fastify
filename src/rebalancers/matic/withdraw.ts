@@ -76,4 +76,6 @@ export const waitForProofOfBurn = async (
       clearInterval(interval);
     }
   }, 30_000);
+
+  return { completed: false };
 };

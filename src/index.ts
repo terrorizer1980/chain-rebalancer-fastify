@@ -7,39 +7,26 @@ import {
   checkDepositStatus,
   deposit,
 } from "./rebalancers/matic/deposit";
+import { burn, waitForProofOfBurn } from "./rebalancers/matic/withdraw";
+import {
+  ApproveParams,
+  ApproveParamsSchema,
+  ApproveResponseSchema,
+  CheckStatusParams,
+  CheckStatusParamsSchema,
+  ExecuteParams,
+  ExecuteParamsSchema,
+} from "./schema";
 
 const server = fastify();
-
-export const RebalanceParamsSchema = Type.Object({
-  amount: TIntegerString,
-  assetId: TAddress,
-  signer: TAddress,
-  txHash: Type.Optional(TBytes32),
-  callbackUrl: Type.Optional(Type.String({ format: "uri" })),
-  fromProvider: Type.String({ format: "uri" }),
-  toProvider: Type.String({ format: "uri" }),
-  fromChainId: Type.Number(),
-  toChainId: Type.Number(),
-});
-export type RebalanceParams = Static<typeof RebalanceParamsSchema>;
-
-export const CheckStatusParamsSchema = Type.Object({
-  txHash: TBytes32,
-  callbackUrl: Type.Optional(Type.String({ format: "uri" })),
-  fromProvider: Type.String({ format: "uri" }),
-  toProvider: Type.String({ format: "uri" }),
-  fromChainId: Type.Number(),
-  toChainId: Type.Number(),
-});
-export type CheckStatusParams = Static<typeof CheckStatusParamsSchema>;
 
 server.get("/ping", async (request, reply) => {
   return "pong\n";
 });
 
-server.post<{ Body: RebalanceParams }>(
+server.post<{ Body: ApproveParams }>(
   "/matic/deposit/approval",
-  { schema: { body: RebalanceParamsSchema } },
+  { schema: { body: ApproveParamsSchema } },
   async (request, reply) => {
     if (![1, 5].includes(request.body.fromChainId)) {
       return reply
@@ -81,9 +68,9 @@ server.post<{ Body: RebalanceParams }>(
   }
 );
 
-server.post<{ Body: RebalanceParams }>(
+server.post<{ Body: ExecuteParams }>(
   "/matic/deposit/execute",
-  { schema: { body: RebalanceParamsSchema } },
+  { schema: { body: ExecuteParamsSchema } },
   async (request, reply) => {
     if (![1, 5].includes(request.body.fromChainId)) {
       return reply
@@ -140,11 +127,6 @@ server.post<{ Body: CheckStatusParams }>(
         .send({ error: "toChainId not supported", body: request.body });
     }
 
-    if (!request.body.txHash) {
-      return reply
-        .code(400)
-        .send({ error: "txHash is required to check status" });
-    }
     try {
       const status = await checkDepositStatus(
         request.body.fromProvider,
@@ -152,6 +134,114 @@ server.post<{ Body: CheckStatusParams }>(
         request.body.fromChainId,
         request.body.toChainId,
         request.body.txHash
+      );
+      return reply.send({ status });
+    } catch (e) {
+      console.log(e);
+      return reply
+        .code(500)
+        .send({ error: `Internal server error: ${e.message}` });
+    }
+  }
+);
+
+server.post<{ Body: ApproveParams }>(
+  "/matic/withdraw/approval",
+  { schema: { body: ApproveParamsSchema, response: ApproveResponseSchema } },
+  async (request, reply) => {
+    if (![1, 5].includes(request.body.fromChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "fromChainId not supported", body: request.body });
+    }
+
+    if (![137, 80001].includes(request.body.toChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "toChainId not supported", body: request.body });
+    }
+    return reply.send({ transaction: undefined, allowance: "not_needed" });
+  }
+);
+
+server.post<{ Body: ExecuteParams }>(
+  "/matic/withdraw/execute",
+  { schema: { body: ExecuteParamsSchema } },
+  async (request, reply) => {
+    if (![1, 5].includes(request.body.fromChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "fromChainId not supported", body: request.body });
+    }
+
+    if (![137, 80001].includes(request.body.toChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "toChainId not supported", body: request.body });
+    }
+
+    const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
+    const version = request.body.fromChainId === 1 ? "v1" : "mumbai";
+    console.log("network: ", network);
+    console.log("version: ", version);
+
+    try {
+      const maticPOSClient = new MaticPOSClient({
+        network,
+        version,
+        parentProvider: request.body.fromProvider,
+        maticProvider: request.body.toProvider,
+      });
+
+      const { transaction } = await burn(
+        maticPOSClient,
+        request.body.assetId,
+        request.body.amount,
+        request.body.signer
+      );
+      return reply.send({ transaction });
+    } catch (e) {
+      console.log(e);
+      return reply.code(500).send({ error: "Internal server error" });
+    }
+  }
+);
+
+server.post<{ Body: CheckStatusParams }>(
+  "/matic/withdraw/status",
+  { schema: { body: CheckStatusParamsSchema } },
+  async (request, reply) => {
+    if (![1, 5].includes(request.body.fromChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "fromChainId not supported", body: request.body });
+    }
+
+    if (![137, 80001].includes(request.body.toChainId)) {
+      return reply
+        .code(400)
+        .send({ error: "toChainId not supported", body: request.body });
+    }
+
+    const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
+    const version = request.body.fromChainId === 1 ? "v1" : "mumbai";
+    console.log("network: ", network);
+    console.log("version: ", version);
+
+    try {
+      const maticPOSClient = new MaticPOSClient({
+        network,
+        version,
+        parentProvider: request.body.fromProvider,
+        maticProvider: request.body.toProvider,
+      });
+      const status = await waitForProofOfBurn(
+        maticPOSClient,
+        request.body.fromChainId,
+        request.body.blockNumber,
+        request.body.txHash,
+        request.body.callbackUrl,
+        request.body.signer
       );
       return reply.send({ status });
     } catch (e) {
