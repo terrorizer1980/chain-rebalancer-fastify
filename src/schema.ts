@@ -54,7 +54,6 @@ export const CheckStatusParamsSchema = Type.Object({
   fromChainId: TChainId,
   toChainId: TChainId,
   signer: TAddress,
-  blockNumber: Type.Number(),
 });
 export type CheckStatusParams = Static<typeof CheckStatusParamsSchema>;
 

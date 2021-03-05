@@ -10,6 +10,7 @@ export const burn = async (
   console.log(
     `burn: ${JSON.stringify({ assetId, amountToBridge, routerAddress })}`
   );
+  // check that there is sufficient funds on signer
   const burn = await maticPOSClient.burnERC20(assetId, amountToBridge, {
     from: routerAddress,
     encodeAbi: true,
@@ -51,7 +52,11 @@ export const checkForProofOfBurn = async (
 
   const res = await rest.get<BlockIncludedResponse>(url);
   if (res.statusCode !== 200) {
-    console.error(`Bad response from Matic API: ${res}`);
+    console.error(
+      `Bad response from Matic API: [${res.statusCode}] ${JSON.stringify(
+        res.result
+      )}`
+    );
     return;
   }
   console.log("res: ", res);
