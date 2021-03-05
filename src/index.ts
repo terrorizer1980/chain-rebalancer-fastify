@@ -147,13 +147,13 @@ server.post<{ Body: ApproveParams }>(
   "/matic/withdraw/approval",
   { schema: { body: ApproveParamsSchema, response: ApproveResponseSchema } },
   async (request, reply) => {
-    if (![1, 5].includes(request.body.fromChainId)) {
+    if (![1, 5].includes(request.body.toChainId)) {
       return reply
         .code(400)
         .send({ error: "fromChainId not supported", body: request.body });
     }
 
-    if (![137, 80001].includes(request.body.toChainId)) {
+    if (![137, 80001].includes(request.body.fromChainId)) {
       return reply
         .code(400)
         .send({ error: "toChainId not supported", body: request.body });

@@ -12,7 +12,6 @@ export const ApproveParamsSchema = Type.Object({
   amount: TIntegerString,
   assetId: TAddress,
   signer: TAddress,
-  txHash: Type.Optional(TBytes32),
   fromProvider: Type.String({ format: "uri" }),
   toProvider: Type.String({ format: "uri" }),
   fromChainId: TChainId,
