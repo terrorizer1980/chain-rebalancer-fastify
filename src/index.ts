@@ -26,7 +26,7 @@ server.get("/ping", async (request, reply) => {
 
 server.post<{ Body: ApproveParams }>(
   "/matic/deposit/approval",
-  { schema: { body: ApproveParamsSchema } },
+  { schema: { body: ApproveParamsSchema, response: ApproveResponseSchema } },
   async (request, reply) => {
     if (![1, 5].includes(request.body.fromChainId)) {
       return reply
@@ -38,6 +38,13 @@ server.post<{ Body: ApproveParams }>(
       return reply
         .code(400)
         .send({ error: "toChainId not supported", body: request.body });
+    }
+
+    // native asset doesnt need approval
+    if (request.body.assetId === constants.AddressZero) {
+      return reply
+        .code(200)
+        .send({ allowance: constants.MaxUint256.toString() });
     }
 
     const network = request.body.fromChainId === 1 ? "mainnet" : "testnet";
