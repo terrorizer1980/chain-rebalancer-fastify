@@ -1,5 +1,5 @@
-# @host=http://localhost:8080
-@host=https://rebalancer.connextapi.com
+@host=http://localhost:8080
+# @host=https://rebalancer.connextapi.com
 
 GET {{host}}/ping
 
@@ -9,13 +9,13 @@ POST {{host}}/matic/deposit/approval
 Content-Type: application/json
 
 {
-  "amount": "100",
-  "assetId": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
-  "signer": "0xe6887c0cc3c37cb2ee34bc58ab258f36825ca910",
-  "fromProvider": "https://mainnet.infura.io/v3/",
-  "fromChainId": 1,
-  "toProvider": "https://rpc-mainnet.matic.network",
-  "toChainId": 137
+  "amount": "10",
+  "assetId": "0x655f2166b0709cd575202630952d71e2bb0d61af",
+  "signer": "0x18EdaEc676341D63d7087D0d999cF1f1a56d565A",
+   "fromProvider": "https://goerli.infura.io/v3/",
+  "fromChainId": 5,
+  "toProvider": "https://rpc-mumbai.matic.today",
+  "toChainId": 80001
 }
 
 ##################
@@ -24,13 +24,13 @@ POST {{host}}/matic/deposit/execute
 Content-Type: application/json
 
 {
-  "amount": "76478066937229740000000",
-  "assetId": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
-  "signer": "0xe6887c0cc3c37cb2ee34bc58ab258f36825ca910",
-  "fromProvider": "https://mainnet.infura.io/v3/",
-  "fromChainId": 1,
-  "toProvider": "https://rpc-mainnet.matic.network",
-  "toChainId": 137
+  "amount": "10000000000000000000",
+  "assetId": "0x655f2166b0709cd575202630952d71e2bb0d61af",
+  "signer": "0x18EdaEc676341D63d7087D0d999cF1f1a56d565A",
+  "fromProvider": "https://goerli.infura.io/v3/",
+  "fromChainId": 5,
+  "toProvider": "https://rpc-mumbai.matic.today",
+  "toChainId": 80001
 }
 
 ##################
@@ -39,12 +39,53 @@ POST {{host}}/matic/deposit/status
 Content-Type: application/json
 
 {
-  "amount": "100",
-  "assetId": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
-  "signer": "0xe6887c0cc3c37cb2ee34bc58ab258f36825ca910",
-  "fromProvider": "https://mainnet.infura.io/v3/",
-  "fromChainId": 1,
-  "toProvider": "https://rpc-mainnet.matic.network",
-  "toChainId": 137,
-  "txHash": "0xa5786b2dc3a342eb3b1935ef38c34e8f6137101b85bcf63ab540b0108feaeaf5"
+  "fromProvider": "https://goerli.infura.io/v3/",
+  "fromChainId": 5,
+  "toProvider": "https://rpc-mumbai.matic.today",
+  "toChainId": 80001,
+  "txHash": "0x6b6140290037607c8c8540e185d8b95295bbd27ff8c18de77ab5d565106bd993",
+  "signer": "0x18EdaEc676341D63d7087D0d999cF1f1a56d565A",
+  "blockNumber": 4382195
+}
+
+##################
+POST {{host}}/matic/withdraw/approval
+Content-Type: application/json
+
+{
+  "amount": "10000000000000000000",
+  "assetId": "0xfe4F5145f6e09952a5ba9e956ED0C25e3Fa4c7F1",
+  "signer": "0x18EdaEc676341D63d7087D0d999cF1f1a56d565A",
+  "toProvider": "https://goerli.infura.io/v3/",
+  "toChainId": 5,
+  "fromProvider": "https://rpc-mumbai.matic.today",
+  "fromChainId": 80001
+}
+
+##################
+POST {{host}}/matic/withdraw/execute
+Content-Type: application/json
+
+{
+  "amount": "10000000000000000000",
+  "assetId": "0xfe4F5145f6e09952a5ba9e956ED0C25e3Fa4c7F1",
+  "signer": "0x18EdaEc676341D63d7087D0d999cF1f1a56d565A",
+  "toProvider": "https://goerli.infura.io/v3/",
+  "toChainId": 5,
+  "fromProvider": "https://rpc-mumbai.matic.today",
+  "fromChainId": 80001
+}
+
+
+##################
+POST {{host}}/matic/withdraw/status
+Content-Type: application/json
+
+{
+  "toProvider": "https://goerli.infura.io/v3/",
+  "toChainId": 5,
+  "fromProvider": "https://rpc-mumbai.matic.today",
+  "fromChainId": 80001,
+  "txHash": "0x19cb5364985b07b03b4d600c5700ecbe92cb0949502902d52c05b1f72d6b5559",
+  "signer": "0x18EdaEc676341D63d7087D0d999cF1f1a56d565A",
 }
