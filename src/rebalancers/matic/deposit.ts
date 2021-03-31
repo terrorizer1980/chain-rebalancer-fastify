@@ -57,7 +57,7 @@ export const approveForDeposit = async (
       }
     );
     console.log("approveTx: ", approveTx);
-    return { transaction: approveTx };
+    return { transaction: approveTx, allowance };
   } else {
     console.log(`Allowance is sufficient`);
     return { allowance };

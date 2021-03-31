@@ -59,7 +59,13 @@ export const checkForProofOfBurn = async (
     );
     return;
   }
-  console.log("res: ", res);
+
+  console.log("checkForProofOfBurn res: ", res);
+  if (!res.result) {
+    console.error("Unknown response, check logs and handle!");
+    return { completed: false };
+  }
+
   if (res.result.message.toLowerCase().includes("No Block found")) {
     console.log("Block not present yet");
     return { completed: false };

@@ -9,13 +9,13 @@ POST {{host}}/matic/deposit/approval
 Content-Type: application/json
 
 {
-  "amount": "10",
-  "assetId": "0x655f2166b0709cd575202630952d71e2bb0d61af",
-  "signer": "0x18EdaEc676341D63d7087D0d999cF1f1a56d565A",
-   "fromProvider": "https://goerli.infura.io/v3/",
+  "amount": "50000000000000000000",
+  "assetId": "0x655F2166b0709cd575202630952D71E2bB0d61Af",
+  "fromProvider": "https://eth-goerli.alchemyapi.io/v2/SU-VoQIQnzxwTrccH4tfjrQRTCrNiX6w",
   "fromChainId": 5,
   "toProvider": "https://rpc-mumbai.matic.today",
-  "toChainId": 80001
+  "toChainId": 80001,
+  "signer": "0x9CD130fE9aC1EF5173eEBE0C163C7a19f3E4ed2B"
 }
 
 ##################
