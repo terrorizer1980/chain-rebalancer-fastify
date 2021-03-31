@@ -9,7 +9,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm audit --audit-level=moderate
+# RUN npm audit --audit-level=moderate
 RUN npm install --no-fund
 
 # web3 1.3.4 affected https://www.npmjs.com/advisories/877/versions , so we use 1.3.4-rc.2
