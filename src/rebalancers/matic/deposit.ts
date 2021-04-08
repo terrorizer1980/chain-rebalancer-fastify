@@ -117,8 +117,15 @@ export const checkDepositStatus = async (
   console.log("tx: ", tx);
   let childCounter = await childContract.lastStateId();
   console.log("childCounter: ", childCounter);
-  let rootCounter = (tx.logs[3] ?? { topics: [] })?.topics[1];
+  let rootCounter =
+    (tx.logs[3] ?? { topics: [] })?.topics[1] ??
+    (tx.logs[tx.logs.length - 1] ?? { topics: [] }).topics[1];
   console.log("rootCounter: ", rootCounter);
+  // console.log(
+  //   "test rootConter: ",
+  //   BigNumber.from(tx.logs[2].topics[1]).toNumber()
+  // );
+  // console.log("test childCounter: ", BigNumber.from(childCounter).toNumber());
   if (!rootCounter) {
     throw new Error(`Could not get root counter`);
   }
