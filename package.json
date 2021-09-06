@@ -17,7 +17,7 @@
     "@maticnetwork/maticjs": "^2.0.37",
     "@sinclair/typebox": "0.12.7",
     "ajv": "7.1.0",
-    "ethers": "^5.1.0",
+    "ethers": "^5.4.4",
     "fastify": "^3.14.1",
     "typed-rest-client": "^1.8.3"
   },
