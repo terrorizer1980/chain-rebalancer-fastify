@@ -1,4 +1,4 @@
-FROM node:14.15.5-alpine3.13 as builder
+FROM node:14.18-alpine3.13 as builder
 
 ARG CI=true
 
@@ -21,7 +21,7 @@ RUN npm run build
  # CMD ["sleep", "3d"]
 # ################################################################################
 
-FROM node:14.15.5-alpine3.13
+FROM node:14.18-alpine3.13
 
 LABEL website="Secure Docker Images https://secureimages.dev"
 LABEL description="We secure your business from scratch."
