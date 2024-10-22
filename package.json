@@ -14,7 +14,7 @@
   "dependencies": {
     "@connext/vector-types": "0.2.2-beta.5",
     "@connext/vector-utils": "0.2.2-beta.5",
-    "@maticnetwork/maticjs": "^2.0.37",
+    "@maticnetwork/maticjs": "^3.9.2",
     "@sinclair/typebox": "0.12.7",
     "ajv": "7.1.0",
     "ethers": "^5.1.0",
