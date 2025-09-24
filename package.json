@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@connext/vector-types": "0.2.2-beta.5",
-    "@connext/vector-utils": "0.2.2-beta.5",
+    "@connext/vector-utils": "0.2.2",
     "@maticnetwork/maticjs": "^2.0.37",
     "@sinclair/typebox": "0.12.7",
     "ajv": "7.1.0",
